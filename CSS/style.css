@@ -1,0 +1,98 @@
+body {
+    background-color: #3f3f3f;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background: linear-gradient(90deg, #FFD700 10%, #ff9800 100%);
+    padding: 2em;
+    color: rgb(83, 83, 83);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+header h1 {
+    text-align: center;
+    margin: 0;
+    font-size: 3.5em;
+    font-weight: 900;
+
+}
+header a {
+    position: absolute;
+    top: 1.5em;
+    right: 40px;
+    background-color: #3f3f3f;
+    color: #ff9800;
+    border: none;
+    padding: 10px 15px;
+    font-size: 1.5em;
+    cursor: pointer;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+header a:hover {
+    background-color: #5A5A5A;
+    color: #FFB84D;
+    box-shadow: 0 3px 12px #000000;
+}
+.search-container {
+    text-align: center;
+    margin: 5em 0;
+    background-color: #ffffff;
+    padding: 1em;
+    border-radius: 50px;
+    width: 30%;
+    margin-left: auto;
+    margin-right: auto;    
+}
+.search-bar {
+    color: #3f3f3f;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    width: 90%;
+    outline: none;
+}
+.search-bar :focus {
+    outline: none;
+}
+.magnifying {
+    color: #3f3f3f;
+    background-color: transparent;
+    border: none;
+    font-size: 1.2em;
+    margin-left: -2px;
+    
+} 
+.magnifying:hover {
+    color: #ff9800;
+    cursor: pointer;
+}
+.movie-sections {
+    padding-top: 30px;
+    color: #ff9800;
+    margin-bottom: 2em;
+}
+.movie-container {
+    background-color: #ffffff;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 100px;
+}
+.movie-card {
+    background-color: #f0f0f0;
+    padding: 15px;
+    border-radius: 8px;
+    width: 250px;
+    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+}
+.movie-card h3 {
+    margin-top: 0;
+    color: #ff9800;
+}
+.movie-card p {
+    font-size: 0.9em;
+    color: #333;
+}

@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinefy</title>
+    <link rel="stylesheet" href="CSS/style.css">
+    <script src="https://kit.fontawesome.com/cf40f06a72.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <header>
+        <a href="acc.html"><i class="fa-solid fa-right-to-bracket"></i></a>
+        <h1>Cinefy</h1>
+    </header>
+
+    <div class="search-container">
+        <a href="#" class="magnifying"><i class="fa-solid fa-magnifying-glass"></i></a>
+        <input type="text" id="searchInput" placeholder="Search" class="search-bar">
+    </div>
+
+    <div class="movie-sections">
+        <h2>Popular Movies</h2>
+        <div id="popularContainer" class="movie-container"></div>
+    </div>
+
+    <div class="movie-sections">
+        <h2>Comedy Movies</h2>
+        <div id="comedyContainer" class="movie-container"></div>
+    </div>
+
+    <div class="movie-sections">
+        <h2>Horror Movies</h2>
+        <div id="horrorContainer" class="movie-container"></div>
+    </div>
+
+    <div class="movie-sections">
+        <h2>Action Movies</h2>
+        <div id="actionContainer" class="movie-container"></div>
+    </div>
+
+    <!-- Link to your JS file (at the end of body to ensure DOM is loaded) -->
+    <script src="Scripts/movieloader.js"></script>
+
+
+</body>
+</html>
