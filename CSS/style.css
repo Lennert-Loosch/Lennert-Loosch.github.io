@@ -81,18 +81,15 @@ header a:hover {
     gap: 20px;
     padding: 100px;
 }
-.movie-card {
-    background-color: #f0f0f0;
-    padding: 15px;
-    border-radius: 8px;
-    width: 250px;
-    box-shadow: 0 3px 6px rgba(0,0,0,0.2);
+img {
+  width: 250px;
+  padding: 5px;
+  object-fit: cover;
+  margin: 5px;
+  border-radius: 15px;
+  transition: transform 0.2s;
 }
-.movie-card h3 {
-    margin-top: 0;
-    color: #ff9800;
-}
-.movie-card p {
-    font-size: 0.9em;
-    color: #333;
+
+img:hover {
+  transform: scale(1.15);
 }
