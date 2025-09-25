@@ -1,3 +1,15 @@
+const firebaseConfig = {
+  apiKey: "AIzaSyBvoeKGw2_IMsAhTS1oLXzko2SVIjwn3Io",
+  authDomain: "idk213.firebaseapp.com",
+  projectId: "idk213",
+  storageBucket: "idk213.firebasestorage.app",
+  messagingSenderId: "41057025557",
+  appId: "1:41057025557:web:03652b64df0c086c8c581c"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 const categoryMap = {
   "Popular": "popularContainer",
   "Comedy": "comedyContainer",
@@ -8,22 +20,26 @@ const categoryMap = {
 function createMovieImage(movie) {
   const img = document.createElement("img");
   img.src = "img/" + movie.name + ".jpg";
+  img.alt = movie.name;
   return img;
 }
 
-function loadMovies() {
-  fetch("movie.json")
-    .then(response => response.json())
-    .then(movies => {
-      movies.forEach(movie => {
+function loadMoviesFromFirestore() {
+  db.collection("movies").get()
+    .then(snapshot => {
+      snapshot.forEach(doc => {
+        const movie = doc.data();
         movie.category.forEach(cat => {
-          const container = document.getElementById(categoryMap[cat]);
-          if (container) {
+          const containerId = categoryMap[cat];
+          if (containerId) {
+            const container = document.getElementById(containerId);
             container.appendChild(createMovieImage(movie));
           }
         });
       });
-    });
+      console.log("Movies loaded from Firestore!");
+    })
+    .catch(error => console.error("Error loading movies from Firestore:", error));
 }
 
-document.addEventListener("DOMContentLoaded", loadMovies);
+document.addEventListener("DOMContentLoaded", loadMoviesFromFirestore);

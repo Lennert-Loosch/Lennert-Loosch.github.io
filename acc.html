@@ -5,9 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Account</title>
     <link rel="stylesheet" href="CSS/acc.css">
+    <script src="https://kit.fontawesome.com/cf40f06a72.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <h1>this will be the side to manage your account: login, logout...</h1>
-    <a href="/index.html"><--back</a>
+    <a href="index.html"><i class="fa-solid fa-circle-left"></i></a>
+    <div class="container">
+        <h1>Register</h1>
+        <form id="accountForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username">
+            
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+            
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            
+            <div class="button-group">
+                <button type="submit">Register</button>
+                <button class="Login">Login</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>

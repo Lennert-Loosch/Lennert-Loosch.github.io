@@ -3,6 +3,7 @@ body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
+    user-select: none;
 }
 
 header {
@@ -16,8 +17,9 @@ header h1 {
     margin: 0;
     font-size: 3.5em;
     font-weight: 900;
-
+    user-select: none;
 }
+
 header a {
     position: absolute;
     top: 1.5em;
@@ -73,13 +75,20 @@ header a:hover {
     padding-top: 30px;
     color: #ff9800;
     margin-bottom: 2em;
+    user-select: none;
+}
+.movie-sections h2 {
+    margin-left: 40px;
+    font-size: 2em;
+    font-weight: 700;
+    margin-bottom: 10px;
 }
 .movie-container {
     background-color: #ffffff;
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
-    padding: 100px;
+    padding: 30px;
 }
 img {
   width: 250px;
@@ -88,6 +97,7 @@ img {
   margin: 5px;
   border-radius: 15px;
   transition: transform 0.2s;
+  padding-left: 0px;
 }
 
 img:hover {
