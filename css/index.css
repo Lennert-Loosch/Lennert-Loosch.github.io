@@ -14,6 +14,13 @@ header {
   top: 0;
 }
 
+header a {
+  color: rgb(85, 85, 85);
+  text-decoration: none;
+  margin: 0 15px;
+  float: right;
+}
+
 footer {
   background-color: #333;
   color: white;
@@ -29,13 +36,42 @@ footer a {
   text-decoration: none;
 }
 
+.join a {
+  background-color: #7ca7fc;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.join a i {
+  font-size: 20px;
+}
+
+.join a:hover {
+  background-color: #0056b3;
+}
+
 .join {
   border: #333 solid 2px;
   background: linear-gradient(to left, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #8B00FF);
   width: 20%;
   margin: 70px auto;
   border-radius: 50%;
+  background-color: #333;
+  color: rgb(236, 40, 40);
   text-align: center;
+}
+
+.join i {
+  font-size: 50px;
+  margin: 20px 0 0 0;
+  background: linear-gradient(to bottom, #FF0000, #FF7F00, #FFFF00, #00FF00, #0000FF, #4B0082, #8B00FF);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  display: inline-block;
 }
 
 .join p {
@@ -43,19 +79,13 @@ footer a {
   font-size: 30px;
 }
 
-.join a {
-  background-color: #7ca7fc;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 5px;
-}
-
-.post {
-  background: white;
-  margin: 1em auto;
-  padding: 0.8em;
-  border-radius: 10px;
-  box-shadow: 0 0 5px rgba(0,0,0,0.1);
-  width: 90%;
-  max-width: 600px;
+/* make the li stack its children vertically and center them */
+.join li {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  margin: 0;
 }
