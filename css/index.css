@@ -25,6 +25,7 @@ a:hover {
 
 button {
   cursor: pointer;
+  font-family: inherit;
 }
 
 /* ======== HEADER ======== */
@@ -100,6 +101,7 @@ input, textarea {
   font-size: 1em;
   resize: none;
   transition: border-color 0.2s;
+  font-family: inherit;
 }
 
 input:focus, textarea:focus {
@@ -132,6 +134,7 @@ button.secondary {
 }
 button.secondary:hover {
   background: #d32f2f;
+  transform: translateY(-2px);
 }
 
 /* ======== FOOTER ======== */
@@ -144,13 +147,24 @@ footer {
   box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
 }
 
-/* ======== FEED PAGE ======== */
-.post-box {
+/* ======== AUTH PAGE ======== */
+.auth-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  width: 100%;
+  max-width: 350px;
+}
+.auth-form button {
+  width: 100%;
+}
+.divider {
+  text-align: center;
+  color: #777;
+  margin: 1em 0;
 }
 
+/* ======== FEED & POSTS ======== */
 .feed-container {
   width: 100%;
   max-width: 600px;
@@ -165,122 +179,55 @@ footer {
   padding: 1em;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
   line-height: 1.4em;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.post:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
 }
 
-.post b {
+.post h3 {
+  color: #222;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.post p {
+  margin: 6px 0;
+}
+
+.post iframe {
+  width: 100%;
+  height: 220px;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.post .meta {
+  font-size: 0.9em;
+  color: #555;
+  margin-top: 8px;
+}
+
+.post .actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.post .actions button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s, color 0.2s;
+}
+.post .actions button:hover {
+  transform: scale(1.2);
   color: #007bff;
 }
 
-/* ======== INDEX PAGE ======== */
-.index-hero {
-  text-align: center;
-  margin-top: 5em;
-}
-
-.join-btn {
-  background: #007bff;
-  color: white;
-  border: none;
-  border-radius: 25px;
-  padding: 12px 25px;
-  font-size: 1.2em;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  transition: background 0.3s, transform 0.2s;
-}
-
-.join-btn:hover {
-  background: #0056b3;
-  transform: scale(1.05);
-}
-
-/* ======== AUTH PAGE ======== */
-.auth-form {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 350px;
-}
-
-.auth-form button {
-  width: 100%;
-}
-
-.divider {
-  text-align: center;
-  color: #777;
-  margin: 1em 0;
-}
-
-/* ======== ACCOUNT PAGE ======== */
-#account-section {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  width: 100%;
-  max-width: 400px;
-  background: white;
-  padding: 1.5em;
-  border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
-}
-.delete-post {
-  background: none;
-  border: none;
-  color: #f44336;
-  float: right;
-  cursor: pointer;
-  font-size: 16px;
-  transition: transform 0.2s;
-}
-
-.delete-post:hover {
-  transform: scale(1.2);
-}
-
-#edit-tools {
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.delete-post {
-  background: none;
-  border: none;
-  color: #f44336;
-  float: right;
-  cursor: pointer;
-  font-size: 16px;
-  transition: transform 0.2s;
-}
-
-.delete-post:hover {
-  transform: scale(1.2);
-}
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 10;
-  left: 0; top: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.6);
-}
-.modal-content {
-  background: #fff;
-  margin: 10% auto;
-  padding: 20px;
-  width: 90%;
-  max-width: 400px;
-  border-radius: 12px;
-}
-.close {
-  float: right;
-  font-size: 24px;
-  cursor: pointer;
-}
-/* Floating post button */
+/* ======== FLOATING BUTTON ======== */
 .floating-btn {
   position: fixed;
   bottom: 20px;
@@ -295,33 +242,40 @@ footer {
   box-shadow: 0 4px 10px rgba(0,0,0,0.2);
   cursor: pointer;
   transition: all 0.3s ease;
+  z-index: 200;
 }
 .floating-btn:hover {
   background: #3b73d1;
   transform: scale(1.1);
 }
 
-/* Composer slide-up panel */
+/* ======== COMPOSER SLIDE-UP ======== */
 .composer {
   position: fixed;
-  bottom: -400px;
+  bottom: 0;
   left: 0;
   width: 100%;
   background: #fff;
   border-top-left-radius: 16px;
   border-top-right-radius: 16px;
   box-shadow: 0 -4px 20px rgba(0,0,0,0.1);
-  transition: bottom 0.4s ease;
-  z-index: 100;
+  transform: translateY(100%);
+  transition: transform 0.35s ease;
+  z-index: 150;
 }
 .composer.show {
-  bottom: 0;
+  transform: translateY(0);
 }
+
 .composer-inner {
   padding: 20px;
+  max-width: 500px;
+  margin: 0 auto;
 }
 .composer-inner h3 {
   margin-top: 0;
+  text-align: center;
+  color: #007bff;
 }
 .composer-inner input,
 .composer-inner textarea {
@@ -336,4 +290,51 @@ footer {
 .composer-actions {
   display: flex;
   justify-content: space-between;
+}
+
+/* Dim background when composer opens */
+.composer::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.composer.show::before {
+  opacity: 1;
+}
+
+/* ======== PROFILE PAGE ======== */
+#profile-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+#profile-name {
+  font-size: 1.5em;
+  margin-bottom: 6px;
+}
+
+#profile-bio {
+  color: #555;
+}
+
+#edit-tools {
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* ======== COMMENTS ======== */
+.comment {
+  background: white;
+  border-radius: 10px;
+  padding: 10px;
+  margin-bottom: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+.comment b {
+  color: #007bff;
 }

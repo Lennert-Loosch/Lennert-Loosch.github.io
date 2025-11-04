@@ -15,6 +15,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
+// Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyBFfuOaMQtzqg9OMCHLRaYWJuNKzQZSJes",
   authDomain: "tweetin-3a780.firebaseapp.com",
@@ -49,11 +50,15 @@ async function initFeed(user) {
 
   openBtn.addEventListener("click", () => composer.classList.add("show"));
   cancelBtn.addEventListener("click", () => composer.classList.remove("show"));
+  window.addEventListener("click", (e) => {
+    if (e.target === composer) composer.classList.remove("show");
+  });
 
   const userRef = doc(db, "users", user.uid);
   const snap = await getDoc(userRef);
   const userData = snap.exists() ? snap.data() : {};
 
+  // Post creation
   submitBtn.addEventListener("click", async () => {
     const title = titleInput.value.trim();
     const description = descInput.value.trim();
@@ -95,6 +100,7 @@ async function initFeed(user) {
 
   async function loadFeed() {
     feed.innerHTML = "<p>Loading posts...</p>";
+
     try {
       const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
       const snap = await getDocs(q);
@@ -147,6 +153,7 @@ async function initFeed(user) {
       document.querySelectorAll(".fav-btn").forEach(btn =>
         btn.onclick = () => toggleField(btn.dataset.id, "favorites")
       );
+
     } catch (err) {
       console.error("Feed load error:", err);
       feed.innerHTML = "<p>Error loading feed.</p>";
