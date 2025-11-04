@@ -5,21 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Feed - Tweetin</title>
   <link rel="stylesheet" href="css/index.css">
+  <script src="https://kit.fontawesome.com/5e37a6b424.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <header>
-    <h1>Tweetin Feed</h1>
-    <button id="logout-btn">Logout</button>
+    <div class="logo">
+      <i class="fa-solid fa-feather"></i>
+      <h1>Tweetin</h1>
+    </div>
+    <nav>
+      <a href="account.html" title="Account"><i class="fa-solid fa-user"></i></a>
+      <button id="logout-btn" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+    </nav>
   </header>
 
   <main>
-    <section id="post-section">
-      <textarea id="post-input" placeholder="What's on your mind?" rows="3"></textarea>
-      <button id="post-btn">Post</button>
-    </section>
+    <div class="card post-box">
+      <textarea id="post-input" placeholder="What's on your mind, editor?" rows="3"></textarea>
+      <button class="primary" id="post-btn"><i class="fa-solid fa-paper-plane"></i> Post</button>
+    </div>
 
-    <section id="feed"></section>
+    <section id="feed" class="feed-container"></section>
   </main>
+
+  <footer>
+    <p>© 2025 Tweetin — Built for editors.</p>
+  </footer>
 
   <script type="module" src="js/feed.js"></script>
 </body>

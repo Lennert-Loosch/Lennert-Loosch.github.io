@@ -1,6 +1,15 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { getFirestore, collection, addDoc, getDocs, query, orderBy, serverTimestamp } 
-  from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
+import { 
+  getFirestore, 
+  collection, 
+  addDoc, 
+  getDocs, 
+  query, 
+  orderBy, 
+  serverTimestamp, 
+  doc, 
+  getDoc 
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } 
   from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
@@ -17,21 +26,28 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
 
-onAuthStateChanged(auth, (user) => {
+onAuthStateChanged(auth, async (user) => {
   if (!user) {
     window.location.href = "auth.html";
   } else {
-    initFeed(user);
+    await initFeed(user);
   }
 });
 
-function initFeed(user) {
+async function initFeed(user) {
   const postInput = document.getElementById("post-input");
   const postBtn = document.getElementById("post-btn");
   const feed = document.getElementById("feed");
   const logoutBtn = document.getElementById("logout-btn");
 
   logoutBtn.addEventListener("click", () => signOut(auth));
+
+  // Fetch user's display name from Firestore
+  const userRef = doc(db, "users", user.uid);
+  const userSnap = await getDoc(userRef);
+  const displayName = userSnap.exists() && userSnap.data().displayName
+    ? userSnap.data().displayName
+    : user.email;
 
   postBtn.addEventListener("click", async () => {
     const text = postInput.value.trim();
@@ -40,7 +56,8 @@ function initFeed(user) {
     try {
       await addDoc(collection(db, "posts"), {
         text,
-        user: user.email,
+        userEmail: user.email,
+        displayName,
         createdAt: serverTimestamp(),
       });
       postInput.value = "";
@@ -59,7 +76,7 @@ function initFeed(user) {
       const post = doc.data();
       const div = document.createElement("div");
       div.classList.add("post");
-      div.innerHTML = `<b>${post.user || "Unknown"}:</b> ${post.text}`;
+      div.innerHTML = `<b>${post.displayName || post.userEmail}:</b> ${post.text}`;
       feed.appendChild(div);
     });
   }

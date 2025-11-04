@@ -5,25 +5,33 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign In - Tweetin</title>
   <link rel="stylesheet" href="css/index.css">
+  <script src="https://kit.fontawesome.com/5e37a6b424.js" crossorigin="anonymous"></script>
 </head>
 <body>
   <header>
-    <h1>Welcome to Tweetin</h1>
-    <p>Sign in or create an account to join the feed.</p>
+    <div class="logo">
+      <i class="fa-solid fa-feather"></i>
+      <h1>Tweetin</h1>
+    </div>
   </header>
 
   <main>
-    <div id="auth-container">
-      <input type="email" id="email" placeholder="Email">
-      <input type="password" id="password" placeholder="Password">
-      <div class="buttons">
-        <button id="signup-btn">Sign Up</button>
-        <button id="login-btn">Login</button>
-      </div>
-      <hr>
-      <button id="google-btn">Sign in with Google</button>
+    <div class="card">
+      <h2><i class="fa-solid fa-user"></i> Sign In / Sign Up</h2>
+      <form class="auth-form">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <button class="primary" id="login-btn"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
+        <button class="primary" id="signup-btn"><i class="fa-solid fa-user-plus"></i> Sign Up</button>
+        <div class="divider">or</div>
+        <button class="primary" id="google-btn"><i class="fa-brands fa-google"></i> Sign in with Google</button>
+      </form>
     </div>
   </main>
+
+  <footer>
+    <p>© 2025 Tweetin</p>
+  </footer>
 
   <script type="module" src="js/auth.js"></script>
 </body>
