@@ -1,12 +1,20 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { 
-  getAuth, 
-  createUserWithEmailAndPassword, 
-  signInWithEmailAndPassword, 
-  GoogleAuthProvider, 
-  signInWithPopup, 
-  onAuthStateChanged 
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  GoogleAuthProvider,
+  signInWithPopup,
+  onAuthStateChanged,
+  signOut,
+  deleteUser
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBFfuOaMQtzqg9OMCHLRaYWJuNKzQZSJes",
@@ -19,41 +27,65 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
+const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 const email = document.getElementById("email");
 const password = document.getElementById("password");
 
-document.getElementById("signup-btn").addEventListener("click", async () => {
+async function createUserProfile(user) {
+  const userRef = doc(db, "users", user.uid);
+  const snap = await getDoc(userRef);
+  if (snap.exists()) return;
+
+  const randomSuffix = Math.random().toString(36).substring(2, 8);
+  const username = `user_${randomSuffix}`;
+
+  await setDoc(userRef, {
+    email: user.email,
+    username,
+    displayName: username,
+    bio: "",
+    createdAt: new Date()
+  });
+}
+
+async function authAndRedirect(promise) {
+  const cred = await promise;
+  await createUserProfile(cred.user);
+  window.location.href = "feed.html";
+}
+
+document.getElementById("signup-btn").addEventListener("click", async (e) => {
+  e.preventDefault();
   try {
-    await createUserWithEmailAndPassword(auth, email.value, password.value);
-    window.location.href = "feed.html";
-  } catch (error) {
-    alert(error.message);
+    await authAndRedirect(createUserWithEmailAndPassword(auth, email.value, password.value));
+  } catch (err) {
+    alert(err.message);
   }
 });
 
-document.getElementById("login-btn").addEventListener("click", async () => {
+document.getElementById("login-btn").addEventListener("click", async (e) => {
+  e.preventDefault();
   try {
-    await signInWithEmailAndPassword(auth, email.value, password.value);
-    window.location.href = "feed.html";
-  } catch (error) {
-    alert(error.message);
+    await authAndRedirect(signInWithEmailAndPassword(auth, email.value, password.value));
+  } catch (err) {
+    alert(err.message);
   }
 });
 
-document.getElementById("google-btn").addEventListener("click", async () => {
+document.getElementById("google-btn").addEventListener("click", async (e) => {
+  e.preventDefault();
   try {
-    await signInWithPopup(auth, provider);
-    window.location.href = "feed.html";
-  } catch (error) {
-    alert(error.message);
+    await authAndRedirect(signInWithPopup(auth, provider));
+  } catch (err) {
+    alert(err.message);
   }
 });
 
-// Auto-redirect if already logged in
+// Auto-redirect if logged in
 onAuthStateChanged(auth, (user) => {
-  if (user) {
+  if (user && !window.location.href.includes("feed.html")) {
     window.location.href = "feed.html";
   }
 });

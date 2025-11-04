@@ -1,17 +1,16 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
-import { 
-  getFirestore, 
-  collection, 
-  addDoc, 
-  getDocs, 
-  query, 
-  orderBy, 
-  serverTimestamp, 
-  doc, 
-  getDoc 
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  getDocs,
+  query,
+  orderBy,
+  serverTimestamp,
+  doc,
+  getDoc
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
-import { getAuth, onAuthStateChanged, signOut } 
-  from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBFfuOaMQtzqg9OMCHLRaYWJuNKzQZSJes",
@@ -42,29 +41,23 @@ async function initFeed(user) {
 
   logoutBtn.addEventListener("click", () => signOut(auth));
 
-  // Fetch user's display name from Firestore
   const userRef = doc(db, "users", user.uid);
-  const userSnap = await getDoc(userRef);
-  const displayName = userSnap.exists() && userSnap.data().displayName
-    ? userSnap.data().displayName
-    : user.email;
+  const snap = await getDoc(userRef);
+  const userData = snap.exists() ? snap.data() : {};
+  const displayName = userData.displayName || userData.username || "anonymous";
 
   postBtn.addEventListener("click", async () => {
     const text = postInput.value.trim();
     if (!text) return alert("Write something first!");
 
-    try {
-      await addDoc(collection(db, "posts"), {
-        text,
-        userEmail: user.email,
-        displayName,
-        createdAt: serverTimestamp(),
-      });
-      postInput.value = "";
-      loadPosts();
-    } catch (error) {
-      console.error("Error adding post:", error);
-    }
+    await addDoc(collection(db, "posts"), {
+      text,
+      displayName,
+      uid: user.uid,
+      createdAt: serverTimestamp()
+    });
+    postInput.value = "";
+    loadPosts();
   });
 
   async function loadPosts() {
@@ -72,11 +65,13 @@ async function initFeed(user) {
     const q = query(collection(db, "posts"), orderBy("createdAt", "desc"));
     const querySnapshot = await getDocs(q);
 
-    querySnapshot.forEach((doc) => {
-      const post = doc.data();
+    querySnapshot.forEach((docSnap) => {
+      const post = docSnap.data();
       const div = document.createElement("div");
       div.classList.add("post");
-      div.innerHTML = `<b>${post.displayName || post.userEmail}:</b> ${post.text}`;
+      div.innerHTML = `
+        <b><a href="profile.html?uid=${post.uid}" class="user-link">${post.displayName}</a>:</b> ${post.text}
+      `;
       feed.appendChild(div);
     });
   }

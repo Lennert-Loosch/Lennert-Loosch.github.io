@@ -14,8 +14,8 @@
       <h1>Tweetin</h1>
     </div>
     <nav>
-      <a href="feed.html" title="Back to Feed"><i class="fa-solid fa-house"></i></a>
-      <button id="logout-btn" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+      <a href="feed.html"><i class="fa-solid fa-house"></i></a>
+      <button id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i></button>
     </nav>
   </header>
 
@@ -23,15 +23,19 @@
     <section id="account-section">
       <h2><i class="fa-solid fa-user-pen"></i> My Account</h2>
       <p><strong>Email:</strong> <span id="user-email"></span></p>
+
       <label for="displayName"><i class="fa-solid fa-id-badge"></i> Display Name</label>
       <input type="text" id="displayName" placeholder="Your public name">
 
       <label for="bio"><i class="fa-solid fa-pen"></i> Bio</label>
       <textarea id="bio" rows="3" placeholder="Tell others about yourself..."></textarea>
 
-      <button class="primary" id="save-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+      <button class="primary" id="save-btn"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+      <button class="secondary" id="delete-btn"><i class="fa-solid fa-trash"></i> Delete Account</button>
       <p id="status"></p>
     </section>
+
+    <section id="user-posts" class="card"></section>
   </main>
 
   <footer>
