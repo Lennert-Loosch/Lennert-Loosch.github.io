@@ -14,14 +14,25 @@
       <h1>Tweetin</h1>
     </div>
     <nav>
-      <a href="feed.html" title="Back to Feed"><i class="fa-solid fa-house"></i></a>
+      <a href="feed.html" title="Feed"><i class="fa-solid fa-house"></i></a>
+      <button id="logout-btn" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
     </nav>
   </header>
 
   <main>
     <section id="profile-section" class="card">
-      <h2 id="profile-name"></h2>
+      <h2 id="profile-name">@username</h2>
       <p id="profile-bio"></p>
+
+      <div id="edit-tools" style="display:none;">
+        <label for="displayName"><i class="fa-solid fa-id-badge"></i> Display Name</label>
+        <input type="text" id="displayName" placeholder="Your display name">
+        <label for="bio"><i class="fa-solid fa-pen"></i> Bio</label>
+        <textarea id="bio" rows="3" placeholder="Tell others about yourself..."></textarea>
+        <button class="primary" id="save-btn"><i class="fa-solid fa-floppy-disk"></i> Save</button>
+        <button class="secondary" id="delete-account-btn"><i class="fa-solid fa-trash"></i> Delete Account</button>
+        <p id="status"></p>
+      </div>
     </section>
 
     <section id="profile-posts" class="feed-container"></section>

@@ -14,22 +14,36 @@
       <h1>Tweetin</h1>
     </div>
     <nav>
-      <a href="account.html" title="My Account"><i class="fa-solid fa-user"></i></a>
-      <button id="logout-btn" title="Logout"><i class="fa-solid fa-right-from-bracket"></i></button>
+      <a href="profile.html"><i class="fa-solid fa-user"></i></a>
+      <button id="logout-btn"><i class="fa-solid fa-right-from-bracket"></i></button>
     </nav>
   </header>
 
   <main>
-    <div class="card post-box">
-      <textarea id="post-input" placeholder="What's on your mind, editor?" rows="3"></textarea>
-      <button class="primary" id="post-btn"><i class="fa-solid fa-paper-plane"></i> Post</button>
-    </div>
-
     <section id="feed" class="feed-container"></section>
   </main>
 
+  <!-- Floating create button -->
+  <button id="create-btn" class="floating-btn">
+    <i class="fa-solid fa-pen"></i>
+  </button>
+
+  <!-- Sliding composer -->
+  <div id="composer" class="composer">
+    <div class="composer-inner">
+      <h3><i class="fa-solid fa-pen-to-square"></i> Create Post</h3>
+      <input id="post-title" type="text" placeholder="Title (required)">
+      <textarea id="post-description" placeholder="Description (optional)"></textarea>
+      <input id="post-video" type="url" placeholder="YouTube URL (optional)">
+      <div class="composer-actions">
+        <button id="cancel-compose" class="secondary">Cancel</button>
+        <button id="submit-post" class="primary">Post</button>
+      </div>
+    </div>
+  </div>
+
   <footer>
-    <p>© 2025 Tweetin — Built for editors.</p>
+    <p>© 2025 Tweetin</p>
   </footer>
 
   <script type="module" src="js/feed.js"></script>
