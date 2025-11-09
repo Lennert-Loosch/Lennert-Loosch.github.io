@@ -14,6 +14,12 @@ import {
   arrayRemove
 } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+import {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL
+} from "https://www.gstatic.com/firebasejs/10.13.0/firebase-storage.js";
 
 // Firebase config
 const firebaseConfig = {
@@ -28,6 +34,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const auth = getAuth(app);
+const storage = getStorage(app);
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) window.location.href = "auth.html";
@@ -46,7 +53,7 @@ async function initFeed(user) {
   const submitBtn = document.getElementById("submit-post");
   const titleInput = document.getElementById("post-title");
   const descInput = document.getElementById("post-description");
-  const videoInput = document.getElementById("post-video");
+  const imageInput = document.getElementById("post-image");
 
   openBtn.addEventListener("click", () => composer.classList.add("show"));
   cancelBtn.addEventListener("click", () => composer.classList.remove("show"));
@@ -62,11 +69,33 @@ async function initFeed(user) {
   submitBtn.addEventListener("click", async () => {
     const title = titleInput.value.trim();
     const description = descInput.value.trim();
-    const videoUrl = videoInput.value.trim();
+    const imageFile = imageInput.files[0];
 
     if (!title) return alert("A title is required.");
-    if (videoUrl && !videoUrl.includes("youtube.com/watch?v=")) {
-      return alert("Only YouTube links are allowed.");
+    
+    // Validate image size (2MB max)
+    if (imageFile && imageFile.size > 2 * 1024 * 1024) {
+      return alert("Image must be less than 2MB.");
+    }
+
+    let imageUrl = "";
+    
+    // Upload image if provided
+    if (imageFile) {
+      try {
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Uploading...";
+        
+        const imageRef = ref(storage, `posts/${user.uid}/${Date.now()}_${imageFile.name}`);
+        await uploadBytes(imageRef, imageFile);
+        imageUrl = await getDownloadURL(imageRef);
+      } catch (error) {
+        console.error("Image upload error:", error);
+        alert("Failed to upload image. Please try again.");
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Post";
+        return;
+      }
     }
 
     await addDoc(collection(db, "posts"), {
@@ -75,7 +104,7 @@ async function initFeed(user) {
       displayName: userData.displayName,
       title,
       description,
-      videoUrl: videoUrl || "",
+      imageUrl: imageUrl || "",
       likes: [],
       favorites: [],
       reposts: [],
@@ -83,7 +112,10 @@ async function initFeed(user) {
     });
 
     composer.classList.remove("show");
-    titleInput.value = descInput.value = videoInput.value = "";
+    titleInput.value = descInput.value = "";
+    imageInput.value = "";
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Post";
     loadFeed();
   });
 
@@ -121,16 +153,12 @@ async function initFeed(user) {
         const hasFav = post.favorites?.includes(user.uid);
         const hasRepost = post.reposts?.includes(user.uid);
 
-        let videoEmbed = "";
-        if (post.videoUrl && post.videoUrl.includes("youtube.com/watch?v=")) {
-          const id = post.videoUrl.split("v=")[1].split("&")[0];
-          videoEmbed = `<iframe src="https://www.youtube.com/embed/${id}" frameborder="0" allowfullscreen></iframe>`;
-        }
+        const imageHtml = post.imageUrl ? `<img src="${post.imageUrl}" alt="${post.title}" loading="lazy">` : "";
 
         div.innerHTML = `
           <h3>${post.title}</h3>
           ${post.description ? `<p>${post.description}</p>` : ""}
-          ${videoEmbed}
+          ${imageHtml}
           <div class="meta">
             <a href="profile.html?username=${post.username}">@${post.username}</a> • 
             <a href="post.html?id=${postId}" class="view-link">View</a>

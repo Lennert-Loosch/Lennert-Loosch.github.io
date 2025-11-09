@@ -40,18 +40,21 @@ async function loadPost(user) {
 
   const post = snap.data();
   const container = document.getElementById("post-container");
-
-  let videoEmbed = "";
-  if (post.videoUrl.includes("youtube.com/watch?v=")) {
-    const videoId = post.videoUrl.split("v=")[1].split("&")[0];
-    videoEmbed = `<iframe width="100%" height="250" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allowfullscreen></iframe>`;
+  const titleEl = document.getElementById("post-title");
+  
+  if (titleEl) {
+    titleEl.textContent = post.title || "Post";
   }
+
+  const imageHtml = post.imageUrl ? `<img src="${post.imageUrl}" alt="${post.title}" loading="lazy">` : "";
 
   container.innerHTML = `
     <h3>${post.title}</h3>
     ${post.description ? `<p>${post.description}</p>` : ""}
-    ${videoEmbed}
-    <p><a href="profile.html?username=${post.username}">@${post.username}</a></p>
+    ${imageHtml}
+    <div class="meta">
+      <a href="profile.html?username=${post.username}">@${post.username}</a>
+    </div>
   `;
 
   loadComments(user);

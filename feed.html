@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Feed - Tweetin</title>
+  <title>Feed - Tweenin</title>
   <link rel="stylesheet" href="css/index.css">
   <script src="https://kit.fontawesome.com/5e37a6b424.js" crossorigin="anonymous"></script>
 </head>
@@ -11,7 +11,7 @@
   <header>
     <div class="logo">
       <i class="fa-solid fa-feather"></i>
-      <h1>Tweetin</h1>
+      <h1>Tweenin</h1>
     </div>
     <nav>
       <a href="profile.html"><i class="fa-solid fa-user"></i></a>
@@ -36,7 +36,8 @@
       <h3><i class="fa-solid fa-pen-to-square"></i> Create Post</h3>
       <input id="post-title" type="text" placeholder="Title (required)">
       <textarea id="post-description" placeholder="Description (optional)"></textarea>
-      <input id="post-video" type="url" placeholder="YouTube URL (optional)">
+      <input id="post-image" type="file" accept="image/*" placeholder="Upload Image (optional)">
+      <small style="color: var(--text-muted); font-size: 0.875rem; margin-top: -0.5rem; margin-bottom: 1rem;">Max 2MB</small>
       <div class="composer-actions">
         <button id="cancel-compose" class="secondary">Cancel</button>
         <button id="submit-post" class="primary">Post</button>
@@ -45,7 +46,7 @@
   </div>
 
   <footer>
-    <p>© 2025 Tweetin</p>
+    <p>© 2025 Tweenin</p>
   </footer>
 
   <script type="module" src="js/feed.js"></script>

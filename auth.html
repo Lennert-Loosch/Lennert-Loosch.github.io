@@ -3,36 +3,708 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sign In - Tweetin</title>
-  <link rel="stylesheet" href="css/index.css">
-  <script src="https://kit.fontawesome.com/5e37a6b424.js" crossorigin="anonymous"></script>
+  <title>Sign In - Tweenin</title>
+  <style>
+    /* ======== DESIGN TOKENS ======== */
+    :root {
+      /* Colors */
+      --bg-gradient-start: #0b0b0c;
+      --bg-gradient-end: #131314;
+      --card-bg: #18181a;
+      --text-primary: #e6e7e8;
+      --text-muted: #9aa0a6;
+      --accent: #ff005a;
+      --accent-hover: #ff3366;
+      --input-bg: #202022;
+      --border-subtle: rgba(255, 255, 255, 0.1);
+      --border-hover: rgba(255, 255, 255, 0.2);
+      
+      /* Spacing */
+      --card-padding: 2.5rem;
+      --input-padding: 0.875rem 1rem;
+      --border-radius: 14px;
+      --input-radius: 10px;
+      --gap-sm: 0.75rem;
+      --gap-md: 1rem;
+      --gap-lg: 1.5rem;
+      
+      /* Shadows */
+      --card-shadow: 0 0 30px rgba(0, 0, 0, 0.4);
+      --accent-glow: 0 0 12px rgba(255, 0, 90, 0.3);
+      --input-focus-glow: 0 0 10px rgba(255, 0, 90, 0.3);
+      --card-hover-shadow: 0 0 40px rgba(0, 0, 0, 0.5);
+      
+      /* Typography */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-size-xs: 0.75rem;
+      --font-size-sm: 0.875rem;
+      --font-size-base: 1rem;
+      --font-size-lg: 1.125rem;
+      --font-size-xl: 1.5rem;
+      --font-size-2xl: 2rem;
+      --font-size-3xl: 2.5rem;
+      
+      /* Transitions */
+      --transition-fast: 0.2s ease;
+      --transition-base: 0.3s ease;
+      --transition-slow: 0.6s ease;
+    }
+
+    /* ======== RESET & BASE ======== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    body {
+      font-family: var(--font-primary);
+      background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+      color: var(--text-primary);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* ======== LAYOUT ======== */
+    .auth-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      max-width: 1200px;
+      width: 100%;
+      align-items: center;
+      animation: fadeIn var(--transition-slow) ease-out;
+    }
+
+    /* ======== HERO SECTION (LEFT) ======== */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-lg);
+      animation: fadeInLeft var(--transition-slow) ease-out;
+    }
+
+    .hero-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero-logo svg {
+      width: 32px;
+      height: 32px;
+      color: var(--accent);
+      filter: drop-shadow(0 0 8px rgba(255, 0, 90, 0.4));
+      animation: pulse 3s ease-in-out infinite;
+    }
+
+    .hero-logo h1 {
+      font-size: var(--font-size-2xl);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      background: linear-gradient(135deg, var(--text-primary) 0%, var(--text-muted) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero h2 {
+      font-size: var(--font-size-3xl);
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0;
+      color: var(--text-primary);
+    }
+
+    .hero p {
+      font-size: var(--font-size-lg);
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0;
+    }
+
+    /* ======== AUTH CARD (RIGHT) ======== */
+    .auth-card {
+      background: var(--card-bg);
+      border-radius: var(--border-radius);
+      padding: var(--card-padding);
+      box-shadow: var(--card-shadow);
+      max-width: 420px;
+      width: 100%;
+      border: 1px solid var(--border-subtle);
+      animation: fadeInUp var(--transition-slow) ease-out 0.2s both;
+      transition: transform var(--transition-base), box-shadow var(--transition-base);
+    }
+
+    .auth-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--card-hover-shadow);
+    }
+
+    .auth-card h2 {
+      font-size: var(--font-size-xl);
+      font-weight: 600;
+      margin: 0 0 2rem 0;
+      color: var(--text-primary);
+      text-align: center;
+    }
+
+    .auth-toggle {
+      text-align: center;
+      margin-top: 1.5rem;
+      font-size: var(--font-size-sm);
+      color: var(--text-muted);
+    }
+
+    .auth-toggle a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 500;
+      transition: color var(--transition-base);
+    }
+
+    .auth-toggle a:hover {
+      color: var(--accent-hover);
+      text-decoration: underline;
+    }
+
+    /* ======== FORM ======== */
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--gap-md);
+    }
+
+    /* ======== INPUT FIELDS ======== */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .auth-form input {
+      width: 100%;
+      border: none;
+      background: var(--input-bg);
+      color: var(--text-primary);
+      border-radius: var(--input-radius);
+      padding: var(--input-padding);
+      font-size: var(--font-size-base);
+      font-family: var(--font-primary);
+      transition: all var(--transition-base);
+      outline: 2px solid transparent;
+    }
+
+    .auth-form input::placeholder {
+      color: var(--text-muted);
+      opacity: 0.7;
+    }
+
+    .auth-form input:focus {
+      outline: 2px solid var(--accent);
+      box-shadow: var(--input-focus-glow);
+      background: #252528;
+      transform: translateY(-1px);
+    }
+
+    .auth-form input:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* ======== BUTTONS ======== */
+    .auth-form button {
+      width: 100%;
+      border: none;
+      border-radius: var(--input-radius);
+      padding: var(--input-padding);
+      font-size: var(--font-size-base);
+      font-weight: 600;
+      font-family: var(--font-primary);
+      cursor: pointer;
+      transition: all var(--transition-base);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.625rem;
+      min-height: 44px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .auth-form button:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      box-shadow: var(--accent-glow);
+    }
+
+    .btn-primary:hover {
+      background: var(--accent-hover);
+      transform: scale(1.02);
+      box-shadow: 0 0 16px rgba(255, 0, 90, 0.4);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-primary);
+      border: 1px solid var(--border-subtle);
+      box-shadow: none;
+    }
+
+    .btn-ghost:hover {
+      background: rgba(255, 255, 255, 0.05);
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .btn-ghost:active {
+      transform: translateY(0);
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .btn-ghost .btn-icon {
+      color: #4285f4;
+    }
+
+    /* ======== DIVIDER ======== */
+    .divider {
+      text-align: center;
+      color: var(--text-muted);
+      margin: 0.5rem 0;
+      position: relative;
+      font-size: var(--font-size-sm);
+    }
+
+    .divider::before,
+    .divider::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 40%;
+      height: 1px;
+      background: var(--border-subtle);
+    }
+
+    .divider::before {
+      left: 0;
+    }
+
+    .divider::after {
+      right: 0;
+    }
+
+    /* ======== ANIMATIONS ======== */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes fadeInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        filter: drop-shadow(0 0 8px rgba(255, 0, 90, 0.4));
+      }
+      50% {
+        filter: drop-shadow(0 0 12px rgba(255, 0, 90, 0.6));
+      }
+    }
+
+    /* ======== RESPONSIVE DESIGN ======== */
+    @media (max-width: 968px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        max-width: 500px;
+      }
+
+      .hero {
+        text-align: center;
+        align-items: center;
+      }
+
+      .hero h2 {
+        font-size: var(--font-size-2xl);
+      }
+
+      .hero p {
+        max-width: 100%;
+      }
+
+      .auth-card {
+        max-width: 100%;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 1.5rem 1rem;
+      }
+
+      .auth-container {
+        gap: 2rem;
+      }
+
+      .hero-logo h1 {
+        font-size: var(--font-size-xl);
+      }
+
+      .hero h2 {
+        font-size: var(--font-size-xl);
+      }
+
+      .hero p {
+        font-size: var(--font-size-base);
+      }
+
+      .auth-card {
+        padding: 2rem 1.5rem;
+      }
+
+      .auth-card h2 {
+        font-size: var(--font-size-lg);
+        margin-bottom: 1.5rem;
+      }
+
+      .auth-form input,
+      .auth-form button {
+        font-size: var(--font-size-sm);
+        padding: 0.75rem 0.875rem;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .auth-card {
+        padding: 1.5rem 1.25rem;
+      }
+    }
+
+    /* ======== ACCESSIBILITY ======== */
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+
+    /* ======== LOADING STATE ======== */
+    .btn-loading {
+      pointer-events: none;
+      opacity: 0.7;
+    }
+
+    .btn-loading::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <div class="logo">
-      <i class="fa-solid fa-feather"></i>
-      <h1>Tweetin</h1>
+  <div class="auth-container">
+    <!-- Left Hero Section -->
+    <div class="hero">
+      <div class="hero-logo">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path>
+          <line x1="16" y1="8" x2="2" y2="22"></line>
+          <line x1="17.5" y1="15" x2="9" y2="15"></line>
+        </svg>
+        <h1>Tweenin</h1>
+      </div>
+      <h2>Welcome to the future of social connection</h2>
+      <p>Join a community where conversations flow naturally. Share your thoughts, connect with friends, and discover what matters to you.</p>
     </div>
-  </header>
 
-  <main>
-    <div class="card">
-      <h2><i class="fa-solid fa-user"></i> Sign In / Sign Up</h2>
-      <form class="auth-form">
-        <input type="email" id="email" placeholder="Email">
-        <input type="password" id="password" placeholder="Password">
-        <button class="primary" id="login-btn"><i class="fa-solid fa-right-to-bracket"></i> Login</button>
-        <button class="primary" id="signup-btn"><i class="fa-solid fa-user-plus"></i> Sign Up</button>
-        <div class="divider">or</div>
-        <button class="primary" id="google-btn"><i class="fa-brands fa-google"></i> Sign in with Google</button>
+    <!-- Right Auth Card -->
+    <div class="auth-card">
+      <h2>Sign In</h2>
+      <form class="auth-form" id="auth-form">
+        <div class="form-group">
+          <input 
+            type="email" 
+            id="email" 
+            name="email"
+            placeholder="Email" 
+            required
+            autocomplete="email"
+            aria-label="Email address"
+          >
+        </div>
+        <div class="form-group">
+          <input 
+            type="password" 
+            id="password" 
+            name="password"
+            placeholder="Password" 
+            required
+            autocomplete="current-password"
+            aria-label="Password"
+            minlength="6"
+          >
+        </div>
+        <button type="submit" class="btn-primary" id="login-btn" aria-label="Sign in">
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          Sign In
+        </button>
+        <div class="divider" aria-hidden="true">or</div>
+        <button type="button" class="btn-ghost" id="google-btn" aria-label="Continue with Google">
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
+            <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
+            <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/>
+            <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
+          </svg>
+          Continue with Google
+        </button>
       </form>
+      <div class="auth-toggle">
+        <span id="toggle-text">Don't have an account? </span><a href="#" id="toggle-link">Sign up</a>
+      </div>
     </div>
-  </main>
+  </div>
 
-  <footer>
-    <p>© 2025 Tweetin</p>
-  </footer>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      GoogleAuthProvider,
+      signInWithPopup,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      collection,
+      query,
+      where,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.13.0/firebase-firestore.js";
 
-  <script type="module" src="js/auth.js"></script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBFfuOaMQtzqg9OMCHLRaYWJuNKzQZSJes",
+      authDomain: "tweetin-3a780.firebaseapp.com",
+      projectId: "tweetin-3a780",
+      storageBucket: "tweetin-3a780.appspot.com",
+      messagingSenderId: "178795608225",
+      appId: "1:178795608225:web:4142f4d80c9b25578118e0"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+    const provider = new GoogleAuthProvider();
+
+    const email = document.getElementById("email");
+    const password = document.getElementById("password");
+    const loginBtn = document.getElementById("login-btn");
+    const googleBtn = document.getElementById("google-btn");
+    const authForm = document.getElementById("auth-form");
+    const toggleLink = document.getElementById("toggle-link");
+    const toggleText = document.getElementById("toggle-text");
+    const cardTitle = document.querySelector(".auth-card h2");
+    
+    let isSignUpMode = false;
+
+    // Generate a random username until it's unique
+    async function generateUniqueUsername() {
+      const animals = ["fox", "wolf", "cat", "hawk", "owl", "lion", "bear", "shark", "tiger"];
+      const adjectives = ["fast", "brave", "happy", "silly", "clever", "calm", "lucky", "cool"];
+      let username;
+      let exists = true;
+
+      while (exists) {
+        const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
+        const ani = animals[Math.floor(Math.random() * animals.length)];
+        const num = Math.floor(Math.random() * 1000);
+        username = `${adj}_${ani}${num}`;
+
+        const q = query(collection(db, "users"), where("username", "==", username));
+        const snap = await getDocs(q);
+        exists = !snap.empty;
+      }
+      return username;
+    }
+
+    async function ensureUserProfile(user) {
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+      if (snap.exists()) return;
+
+      const username = await generateUniqueUsername();
+
+      await setDoc(userRef, {
+        email: user.email,
+        username,
+        displayName: username,
+        bio: "",
+        createdAt: new Date()
+      });
+    }
+
+    function setButtonLoading(button, isLoading) {
+      if (isLoading) {
+        button.classList.add("btn-loading");
+        button.disabled = true;
+      } else {
+        button.classList.remove("btn-loading");
+        button.disabled = false;
+      }
+    }
+
+    function showError(message) {
+      // Simple error display - you can enhance this
+      alert(message);
+    }
+
+    async function handleAuth(promise, button) {
+      try {
+        setButtonLoading(button, true);
+        const cred = await promise;
+        await ensureUserProfile(cred.user);
+        window.location.href = "feed.html";
+      } catch (err) {
+        setButtonLoading(button, false);
+        showError(err.message);
+      }
+    }
+
+    // Toggle between Sign In and Sign Up
+    toggleLink.addEventListener("click", (e) => {
+      e.preventDefault();
+      isSignUpMode = !isSignUpMode;
+      
+      if (isSignUpMode) {
+        cardTitle.textContent = "Sign Up";
+        loginBtn.innerHTML = `
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+            <circle cx="9" cy="7" r="4"></circle>
+            <line x1="19" y1="8" x2="19" y2="14"></line>
+            <line x1="22" y1="11" x2="16" y2="11"></line>
+          </svg>
+          Sign Up
+        `;
+        toggleText.textContent = "Already have an account? ";
+        toggleLink.textContent = "Sign in";
+      } else {
+        cardTitle.textContent = "Sign In";
+        loginBtn.innerHTML = `
+          <svg class="btn-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"></path>
+            <polyline points="10 17 15 12 10 7"></polyline>
+            <line x1="15" y1="12" x2="3" y2="12"></line>
+          </svg>
+          Sign In
+        `;
+        toggleText.textContent = "Don't have an account? ";
+        toggleLink.textContent = "Sign up";
+      }
+    });
+
+    // Form submission (Sign In / Sign Up)
+    authForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      if (!email.value || !password.value) {
+        showError("Please fill in all fields");
+        return;
+      }
+      
+      if (password.value.length < 6) {
+        showError("Password must be at least 6 characters");
+        return;
+      }
+      
+      const authPromise = isSignUpMode
+        ? createUserWithEmailAndPassword(auth, email.value, password.value)
+        : signInWithEmailAndPassword(auth, email.value, password.value);
+      
+      await handleAuth(authPromise, loginBtn);
+    });
+
+    // Google Sign In
+    googleBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      await handleAuth(signInWithPopup(auth, provider), googleBtn);
+    });
+
+    // Auto-redirect if already authenticated
+    onAuthStateChanged(auth, async (user) => {
+      if (user && !window.location.href.includes("feed.html")) {
+        await ensureUserProfile(user);
+        window.location.href = "feed.html";
+      }
+    });
+  </script>
 </body>
 </html>

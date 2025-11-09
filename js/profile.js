@@ -127,11 +127,17 @@ function renderPosts(postsSnap, username, isOwner, currentUid) {
     const d = p.data();
     const div = document.createElement("div");
     div.classList.add("post");
+    const imageHtml = d.imageUrl ? `<img src="${d.imageUrl}" alt="${d.title}" loading="lazy">` : "";
     div.innerHTML = `
-      <b>@${d.username}</b>: ${d.text}
-      ${isOwner && d.uid === currentUid
-        ? `<button class="delete-post" data-id="${p.id}"><i class="fa-solid fa-trash"></i></button>`
-        : ""}
+      <h3>${d.title}</h3>
+      ${d.description ? `<p>${d.description}</p>` : ""}
+      ${imageHtml}
+      <div class="meta">
+        <a href="post.html?id=${p.id}">View Post</a>
+        ${isOwner && d.uid === currentUid
+          ? `<button class="delete-post secondary" data-id="${p.id}" style="margin-left: auto;"><i class="fa-solid fa-trash"></i> Delete</button>`
+          : ""}
+      </div>
     `;
     postsEl.appendChild(div);
   });
